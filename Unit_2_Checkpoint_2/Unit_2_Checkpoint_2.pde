@@ -11,14 +11,35 @@ void setup() {
 }
 
 void draw() {
-  pushMatrix();
-  translate(600, 400);
-  rotate(radians(320));
+
   background(255);
 
   x -= 1;
-
+  
   // Can
+  can(600, 400, 320);
+  
+  // Face
+  fill(#FFDBAC);
+  circle(300, 500, 300);
+
+  // Eye
+  fill(#1569C7);
+  circle(300, 425, 50);
+
+  // Mouth
+  fill(255, 0, 0);
+  rotate(radians(320));
+  arc(55, 600, 225, 50, radians(90), radians(270));
+  // Hair
+  fill(#90542F);
+  ellipse(-100, 450, 225, 75);
+}
+
+void can(int xx, int y, int a) {
+  pushMatrix();
+  translate(xx, y);
+  rotate(radians(a));
   fill(0);
   rect(-50, -100, 100, 250, 25);
 
@@ -31,25 +52,8 @@ void draw() {
 
   fill(#FCB033);
   circle(x, -100, 50);
-
+  popMatrix();
   if (x == -200) {
     x = -50;
   }
-
-  // Face
-  popMatrix();
-  fill(#FFDBAC);
-  circle(300, 500, 300);
-
-  // Eye
-  fill(#1569C7);
-  circle(300, 400, 50);
-
-  // Mouth
-  fill(255, 0, 0);
-  rotate(radians(320));
-  arc(55, 600, 225, 50, radians(90), radians(270));
-  // Hair
-  fill(#90542F);
-  
 }
