@@ -5,18 +5,28 @@ void setup() {
   x = 1000;
 }
 void draw() {
+  x -= 5;
   background(#8A0303);
   // Nuke
-  nuke(x, 500);
+  if (x >= 0) {
+    nuke(x, 500);
+  }
   // Ground
   fill(#555555);
   ellipse(500, 1000, 3000, 400);
 }
 
 void nuke(int x, int y) {
-  triangle(x + 50, y - 10, x + 150, y - 10, x + 225, y - 35);
-  triangle(x + 50, y + 10, x + 150, y + 10, x + 225, y + 35);
-  rect(x, y - 15, 100, 30);
+  pushMatrix();
+  translate(500, 1000);
+  rotate(radians(x));
+  translate(x - 500, y - 1000);
+  rotate(radians(-x));
+  triangle(50, -10, 150, -10, 225, -35);
+  triangle(50, 10, 150, 10, 225, 35);
+  rect(0, -15, 100, 30);
   fill(#3cff49);
   ellipse(x, y, 15, 30);
+  image(loadImage("radiation2.png"), x + 50, y - 15, 30, 30);
+  popMatrix();
 }
