@@ -10,11 +10,13 @@ void draw() {
   x -= 1;
   background(#8A0303);
   // Nuke
-  if (x >= 700) {
+  if (x >= 640) {
     nuke(x, 700);
   } else {
-    e += 3;
-    explode(e);
+    if (e < 3000) {
+      e += 35;
+      explode(e);
+    }
   }
   // Ground
   fill(#555555);
@@ -38,25 +40,32 @@ void nuke(int x, int y) {
 void explode(int x) {
   fill(#3cff49);
   circle(200, 800, x);
-  if (x >= 100) {
-    skeleton(200, 700);
+  pushMatrix();
+  translate(200, 685);
+  rotate(x);
+  if (x >= 250) {
+    skeleton();
   }
+
+  popMatrix();
+  pushMatrix();
+  translate(350, 675);
+  rotate(x);
   if (x >= 500) {
-    skeleton(350, 675);
+    skeleton();
   }
+  popMatrix();
+  pushMatrix();
+  if (x >= 2000) {
+    for (int i = 0; i < 7; i++) {
+      translate(i * 75, 665 - i * 10);
+      rotate(x);
+      skeleton();
+    }
+  }
+  popMatrix();
 }
 
-void skeleton(int x, int y) {
-  if (r == 0) {
-    r = int(random(0, 4));
-  }
-  if (r == 1) {
-    image(loadImage("skeleton.webp"), x, y, 75, 125);
-  }
-  if (r == 2) {
-    image(loadImage("skeleton2.png"), x, y, 75, 125);
-  }
-  if (r == 3) {
-    image(loadImage("skeleton.webp"), x, y, 75, 125);
-  }
+void skeleton() {
+  image(loadImage("skeleton2.png"), 0, 0, 75, 125);
 }
