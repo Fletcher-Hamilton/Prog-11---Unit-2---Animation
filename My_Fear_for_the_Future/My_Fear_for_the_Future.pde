@@ -9,6 +9,7 @@ void setup() {
 void draw() {
   x -= 1;
   background(#8A0303);
+
   // Nuke
   if (x >= 640) {
     nuke(x, 700);
@@ -21,6 +22,9 @@ void draw() {
   // Ground
   fill(#555555);
   ellipse(500, 1000, 3000, 400);
+  
+  // Random Figures
+  randomFigure(175, 625, x);
 }
 
 void nuke(int x, int y) {
@@ -66,6 +70,16 @@ void explode(int x) {
   popMatrix();
 }
 
+void skeleton() {
+  image(loadImage("skeleton2.png"), 0, 0, 75, 125);
+}
+void randomFigure(int x, int y, int z) {
+  if (z >= 640) {
+    image(loadImage("soldier.png"), x, y, 600, 200);
+  } else {
+    image(loadImage("skeleton12345.png"), x, y, 140, 200);
+  }
+}
 void skeleton() {
   image(loadImage("skeleton2.png"), 0, 0, 75, 125);
 }
