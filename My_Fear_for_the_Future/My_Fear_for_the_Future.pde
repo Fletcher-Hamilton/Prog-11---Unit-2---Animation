@@ -1,10 +1,11 @@
 // Fletcher Hamilton
-int x, e, r;
+int x, e, r, z;
 void setup() {
   size(1000, 1000);
   x = 725;
   e = 0;
   r = 0;
+  z = 500;
 }
 void draw() {
   x -= 1;
@@ -17,12 +18,15 @@ void draw() {
     if (e < 3000) {
       e += 35;
       explode(e);
+    } else {
+      z -= 1;
+      aftermath(500, 500, z);
     }
   }
   // Ground
   fill(#555555);
   ellipse(500, 1000, 3000, 400);
-  
+
   // Random Figures
   randomFigure(175, 625, x);
 }
@@ -69,10 +73,6 @@ void explode(int x) {
   }
   popMatrix();
 }
-
-void skeleton() {
-  image(loadImage("skeleton2.png"), 0, 0, 75, 125);
-}
 void randomFigure(int x, int y, int z) {
   if (z >= 640) {
     image(loadImage("soldier.png"), x, y, 600, 200);
@@ -82,4 +82,19 @@ void randomFigure(int x, int y, int z) {
 }
 void skeleton() {
   image(loadImage("skeleton2.png"), 0, 0, 75, 125);
+}
+
+int aftermath(int x, int y, int z, int counter) {
+  if (z <= y - 100) {
+    z = y;
+  }
+
+  noStroke();
+  background(#8A0303);
+  fill(#555555);
+  ellipse(500, 1000, 3000, 400);
+  fill(#3cff49);
+  ellipse(x, y, 175, 50);
+  circle(x-25, z, 10);
+  return z;
 }
