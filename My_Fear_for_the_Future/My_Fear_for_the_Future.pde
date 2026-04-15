@@ -91,17 +91,36 @@ void aftermath(int x, int y) {
   g += 25;
 
   for (int i = 0; i < 10000; i++) {
-    int h = int(random(0, 13)) * 25 - 125;
-    circle(x+h, y+g, 10);
-    
+    class Radiation {
+      private int x;
+      private int y;
+
+      public class Radiation {
+        private int x;
+        private int y;
+
+        public Radiation(int x, int y) {
+          this.x = x;
+          this.y = y;
+        }
+
+        public void d6raw() {
+          int x = y;
+        }
+      }
+    }
   }
-  // Hider
-  fill(#8A0303);
+  int h = int(random(0, 13)) * 25 - 125;
+  circle(x+h, y+g, 10);
+  Radiaton.
+}
+// Hider
+fill(#8A0303);
 
-  rect(x - 1000, y, 2000, 1000);
-  fill(#555555);
-  ellipse(500, 1000, 3000, 400);
+rect(x - 1000, y, 2000, 1000);
+fill(#555555);
+ellipse(500, 1000, 3000, 400);
 
-  fill(#3cff49);
-  ellipse(x, y, 200, 75);
+fill(#3cff49);
+ellipse(x, y, 200, 75);
 }
