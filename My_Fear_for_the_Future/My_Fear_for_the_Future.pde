@@ -1,5 +1,6 @@
 // Fletcher Hamilton
 int x, e, r, g;
+ArrayList<RadiationSource> sources = new ArrayList<RadiationSource>();
 void setup() {
   size(1000, 1000);
   x = 725;
@@ -8,7 +9,7 @@ void setup() {
   g = -25;
 }
 void draw() {
-  x -= 1;
+  x -= 1; // adjust this to adjust the speed of the nuke
   background(#8A0303);
 
   // Nuke
@@ -19,7 +20,9 @@ void draw() {
       e += 35;
       explode(e);
     } else {
-      aftermath(500, 800);
+      sources.add(new RadiationSource(200, 500));
+      sources.add(new RadiationSource(400, 450));
+      sources.add(new RadiationSource(600, 500));
     }
   }
   // Ground
@@ -71,6 +74,12 @@ void explode(int x) {
     }
   }
   popMatrix();
+
+
+  for (RadiationSource source : sources) {
+    source.update();
+    source.display();
+  }
 }
 void randomFigure(int x, int y, int z) {
   if (z >= 640) {
@@ -83,44 +92,71 @@ void skeleton() {
   image(loadImage("skeleton2.png"), 0, 0, 75, 125);
 }
 
-void aftermath(int x, int y) {
+// click to add new sources
+void mousePressed() {
+  sources.add(new RadiationSource(mouseX, mouseY));
+}
+class RadiationSource {
+  float x, y;
+  ArrayList<Particle> particles;
+  int emitRate = 5; // frames between when particles get emitted
+  int frameCount = 0;
 
-  noStroke();
-  background(#8A0303);
-  fill(#3cff49);
-  g += 25;
+  RadiationSource(float x, float y) {
+    this.x = x;
+    this.y = y;
+    particles = new ArrayList<Particle>();
+  }
 
-  for (int i = 0; i < 10000; i++) {
-    class Radiation {
-      private int x;
-      private int y;
+  void update() {
+    frameCount++;
 
-      public class Radiation {
-        private int x;
-        private int y;
+    // Emit new particle
+    if (frameCount >= emitRate) {
+      frameCount = 0;
+      float offsetX = random(-15, 15); // slight x offset to make the particles come up from different places from the same toxic waste pool
+      particles.add(new Particle(x + offsetX, y));
+    }
 
-        public Radiation(int x, int y) {
-          this.x = x;
-          this.y = y;
-        }
+    // Update all particles
+    for (int i = particles.size() - 1; i >= 0; i--) {
+      Particle p = particles.get(i);
+      p.update();
 
-        public void d6raw() {
-          int x = y;
-        }
+      // Remove if off screen
+      if (p.y < -10) {
+        particles.remove(i);
       }
     }
   }
-  int h = int(random(0, 13)) * 25 - 125;
-  circle(x+h, y+g, 10);
-  Radiaton.
+  
+  // The toxic waste pool
+  void display() {
+    fill(#3cff49);
+    noStroke();
+    ellipse(x, y, 20, 12);
+
+    // Draw all particles
+    for (Particle p : particles) {
+      p.display();
+    }
+  }
 }
-// Hider
-fill(#8A0303);
+class Particle {
+  float x, y;
 
-rect(x - 1000, y, 2000, 1000);
-fill(#555555);
-ellipse(500, 1000, 3000, 400);
+  Particle(float x, float y) {
+    this.x = x;
+    this.y = y;
+  }
 
-fill(#3cff49);
-ellipse(x, y, 200, 75);
+  void update() {
+    y -= 2; // change this to adjust the speed of rising
+    x += random(-0.3, 0.3); // to move it sideways as it rises. closer the #s are, the less movement laterally
+  }
+
+  void display() {
+    noStroke();
+    ellipse(x, y, 10, 10);
+  }
 }
