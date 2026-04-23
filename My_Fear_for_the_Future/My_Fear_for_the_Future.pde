@@ -5,12 +5,13 @@ ArrayList<RadiationSource> sources = new ArrayList<RadiationSource>();
 
 boolean sourcesAdded = false;
 void setup() {
-  frameRate(20); // adjust this to adjust the speed of everything (larger the number, the faster)
+  frameRate(60); // adjust this to adjust the speed of everything (larger the number, the faster) (15 reccomended)
 
   size(1000, 1000);
   x = 725;
   e = 0;
 
+  // Load sprites used in animation
   soldierImg = loadImage("soldier.png");
   skeletonImg = loadImage("skeleton12345.png");
   skeleton2Img = loadImage("skeleton2.png");
@@ -29,21 +30,27 @@ void draw() {
     e += 35;
     explode(e);
   } else if (!sourcesAdded) {
-    sources.add(new RadiationSource(200, 500));
-    sources.add(new RadiationSource(400, 450));
-    sources.add(new RadiationSource(600, 500));
+    for (int i = 50; i < width; i += width/5-25) {
+      sources.add(new RadiationSource(i, 800));
+    }
     sourcesAdded = true;
+  }
+
+  for (RadiationSource source : sources) {
+    source.update();
+    source.display();
   }
 
   // Ground
   fill(#555555);
-  ellipse(500, 1000, 3000, 400);
+  ellipse(width/2, height, width*6, 400);
 
   // Random Figures
   randomFigure(175, 625, x);
 
   if (e > 0 && e < 3000) drawSkeletons(e);
 }
+
 void nuke(int x, int y) {
   pushMatrix();
   translate(500, 1000);
@@ -63,10 +70,6 @@ void nuke(int x, int y) {
 void explode(int e) {
   fill(#3cff49);
   circle(200, 800, e);
-  for (RadiationSource source : sources) {
-    source.update();
-    source.display();
-  }
 }
 
 void randomFigure(int x, int y, int z) {
@@ -108,7 +111,7 @@ void skeleton() {
 
 // click to add new sources
 void mousePressed() {
-  sources.add(new RadiationSource(mouseX, mouseY));
+  if (mouseY >= 800) sources.add(new RadiationSource(mouseX, mouseY));
 }
 class RadiationSource {
   float x, y;
@@ -123,12 +126,12 @@ class RadiationSource {
   }
 
   void update() {
-    frameCount++;
+    frameCount++; // since this area isn't in draw, it needs to run the frames manually
 
     // Emit new particle
     if (frameCount >= emitRate) {
       frameCount = 0;
-      float offsetX = random(-15, 15); // slight x offset to make the particles come up from different places from the same toxic waste pool
+      float offsetX = random(-25, 25); // slight x offset to make the particles come up from different places from the same toxic waste pool
       particles.add(new Particle(x + offsetX, y));
     }
 
@@ -148,7 +151,7 @@ class RadiationSource {
   void display() {
     fill(#3cff49);
     noStroke();
-    ellipse(x, y, 20, 12);
+    ellipse(x, y, 50, 12);
 
     // Draw all particles
     for (Particle p : particles) {
